@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Recorder PWA</title>
+    
+    <!-- PWA設定 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2196F3">
+    
+    <!-- iOS対応 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Voice Recorder">
+    
+    <!-- スタイル -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎙️ Voice Recorder</h1>
+            <div class="status" id="status">Ready to record</div>
+        </header>
+
+        <main>
+            <!-- 録音コントロール -->
+            <div class="recording-control">
+                <button id="recordBtn" class="record-btn">
+                    <span class="record-icon">⏺️</span>
+                    <span class="record-text">Start Recording</span>
+                </button>
+                
+                <div class="recording-info" id="recordingInfo" style="display: none;">
+                    <div class="timer" id="timer">00:00</div>
+                    <div class="recording-indicator">
+                        <div class="pulse"></div>
+                        Recording...
+                    </div>
+                </div>
+            </div>
+
+            <!-- 録音一覧 -->
+            <div class="recordings-section">
+                <h2>📁 Recordings</h2>
+                <div id="recordingsList" class="recordings-list">
+                    <div class="no-recordings">No recordings yet</div>
+                </div>
+            </div>
+
+            <!-- Google Drive 設定 -->
+            <div class="drive-section">
+                <h2>☁️ Google Drive</h2>
+                <button id="authBtn" class="auth-btn">Connect to Google Drive</button>
+                <div id="authStatus" class="auth-status"></div>
+            </div>
+        </main>
+
+        <!-- 接続状況表示 -->
+        <div class="connection-status" id="connectionStatus">
+            <span class="status-text">Offline</span>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+    
+    <!-- Service Worker 登録 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
